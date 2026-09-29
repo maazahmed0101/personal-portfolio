@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Typing Effect</title>
+
+<style>
+    body {
+        background: #111;
+        color: white;
+        font-size: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: monospace;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 3px;
+        background: white;
+        margin-left: 5px;
+        animation: blink 0.7s infinite;
+    }
+
+    @keyframes blink {
+        0%, 50%, 100% { opacity: 1; }
+        25%, 75% { opacity: 0; }
+    }
+</style>
+</head>
+
+<body>
+
+<div>
+    <span id="text"></span>
+    <span class="cursor"></span>
+</div>
+
+<script>
+const words = ["Hello Don Bhai😡", "Web Developer", "Frontend Expert"];
+let wordIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+
+function typeEffect() {
+    let currentWord = words[wordIndex];
+    
+    if (isDeleting) {
+        charIndex--;
+    } else {
+        charIndex++;
+    }
+
+    document.getElementById("text").textContent = currentWord.substring(0, charIndex);
+
+    let speed = isDeleting ? 50 : 100;
+
+    if (!isDeleting && charIndex === currentWord.length) {
+        speed = 1500; // rukna
+        isDeleting = true;
+    } 
+    else if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        speed = 500;
+    }
+
+    setTimeout(typeEffect, speed);
+}
+
+typeEffect();
+</script>
+
+</body>
+</html>
+
+You said
+jab screen refresh ho ya jab load ho to tab sides se aye or apne jagah pe rokh jaye
+
+Gemini said
+Screen refresh ya page load hote hi elements ko sides se laane ke liye humein CSS ki @keyframes animation ka hi istemal karna hoga. Jab aap page load karte hain, browser automatically CSS ko read karta hai aur animation shuru kar deta hai.
+
+Isse aur bhi professional banane ke liye hum animation-fill-mode: forwards ka use karte hain taake element apni jagah par ruk jaye.
+
+Niche diya gaya code aapke portfolio ke liye perfect rahega:
+
+1. HTML Structure
+Aap apne text aur image ko alag-alag classes dein:
+
+HTML
+<div class="hero-section">
+    <div class="reveal-left">
+        <h1>Hi, I'm a Developer</h1>
+        <p id="typing-text"></p>
+    </div>
+
+    <div class="reveal-right">
+        <img src="profile.jpg" alt="My Image">
+    </div>
+</div>
+2. CSS Magic (The Secret Sauce)
+Humein translateX (X-axis par move karna) aur opacity (shafafiyat) ka use karna hai.
+
+CSS
+/* Puray page ka overflow-x hidden rakhein taake 
+   animation ke waqt side-scroll na aaye */
+body {
+    overflow-x: hidden;
+}
+
+.hero-section {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100vh;
+}
+
+/* LEFT SIDE ANIMATION */
+.reveal-left {
+    opacity: 0; /* Shuru mein gayab */
+    transform: translateX(-100px); /* 100px pichay (left side) */
+    animation: moveIn 1.2s ease-out forwards; /* 1.2 seconds mein aayega */
+}
+
+/* RIGHT SIDE ANIMATION */
+.reveal-right {
+    opacity: 0; /* Shuru mein gayab */
+    transform: translateX(100px); /* 100px aagay (right side) */
+    animation: moveIn 1.2s ease-out forwards;
+    animation-delay: 0.3s; /* Thoda ruk kar aayega, jo cool lagta hai */
+}
+
+/* COMMON ANIMATION LOGIC */
+@keyframes moveIn {
+    to {
+        opacity: 1; /* Poora nazar aaye */
+        transform: translateX(0); /* Apni asli jagah (0) par aa jaye */
+    }
+}
+Step-by-Step Samjhein Ye Kaise Kaam Kar Raha Hai:
+opacity: 0 se 1: Jab page load hota hai, element halka sa dhundla hota hai aur phir saaf nazar aane lagta hai (Fade-in effect).
+
+transform: translateX:
+
+Left wale ke liye humne -100px rakha, yaani wo thoda left se start hoga.
+
+Right wale ke liye 100px rakha, yaani wo thoda right se start hoga.
+
+forwards (Sabse Important): Agar aap ye nahi likhenge, toh element side se aayega aur phir achanak wapis gayab ho jayega. forwards computer ko batata hai ke: "Bhai, animation jahan khatam hui hai (yaani 100% par), wahi ruke rehna!"
+
+animation-delay: Maine image par 0.3s ka delay lagaya hai. Isse kya hota hai ke pehle text aata hai aur uske kuch hi milliseconds baad image aati hai. Isse portfolio zyada professional aur "premium" feel deta hai.
+
+Ek Choti Tip:
+Agar aap chahte hain ke text bilkul screen ke bahar se aaye, toh 100px ki jagah 100% ya 500px likh kar check karein. Jitna bada number hoga, animation utni hi door se travel karke aayegi.
+
+Kya aapne ye CSS apne project mein apply karke dekha? Result kaisa aa raha hai?

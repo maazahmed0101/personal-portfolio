@@ -1,0 +1,34 @@
+.card {
+  position: relative;
+  overflow: hidden;
+  width: 250px;
+  height: 200px;
+  background: #222;
+  color: white;
+  padding: 20px;
+}
+
+/* overlay (deewar) */
+.card::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: rgba(0, 0, 255, 0.7); /* blue overlay */
+  transition: 0.4s ease;
+  z-index: 1;
+}
+
+/* hover pe upar aaye */
+.card:hover::before {
+  height: 100%;
+}
+
+/* content upar rahe */
+.card h2,
+.card p {
+  position: relative;
+  z-index: 2;
+}
